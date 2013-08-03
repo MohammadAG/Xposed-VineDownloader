@@ -134,7 +134,7 @@ public class VineDownloader implements IXposedHookLoadPackage {
 				View paramView = (View) param.args[1];
 				int tag = ((Integer)paramView.getTag()).intValue();
 				if (tag == VINE_DOWNLOADER_RESULT) {
-					mPostId = (Long) getObjectField(param.thisObject, "mPostId");
+				    mPostId = (Long) getObjectField(param.thisObject, "mPostId");
 				    Intent localIntent = new Intent();
 				    localIntent.putExtra("post_id", mPostId);
 				    
@@ -144,7 +144,7 @@ public class VineDownloader implements IXposedHookLoadPackage {
 				    Method finishMethod = postOptionsDialogActivityClass.getMethod("finish");
 				    finishMethod.invoke(param.thisObject);
 				    
-					param.setResult(false);
+				    param.setResult(false);
 				}
 			}
 		});
