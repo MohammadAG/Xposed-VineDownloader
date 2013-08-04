@@ -5,6 +5,7 @@ import static de.robv.android.xposed.XposedHelpers.findClass;
 import static de.robv.android.xposed.XposedHelpers.findConstructorExact;
 import static de.robv.android.xposed.XposedHelpers.getObjectField;
 
+import java.io.File;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -58,16 +59,6 @@ public class VineDownloader implements IXposedHookLoadPackage {
 			}
 		});
 		
-		findAndHookMethod("co.vine.android.PostOptionsDialogActivity", lpparam.classLoader, "onDialogDone", 
-				DialogInterface.class, int.class, int.class, new XC_MethodHook() {
-			
-			@Override
-			protected void beforeHookedMethod(MethodHookParam param)
-					throws Throwable {
-				XposedBridge.log("onDialogDone " + String.valueOf(param.args[1]) + " " + String.valueOf(param.args[2]));
-			}
-		});
-		
 		findAndHookMethod("co.vine.android.BaseTimelineFragment", lpparam.classLoader, "onActivityResult",
 				int.class, int.class, Intent.class, new XC_MethodHook() {
 			@SuppressWarnings("rawtypes")
@@ -103,6 +94,11 @@ public class VineDownloader implements IXposedHookLoadPackage {
 										Toast.makeText(mContext, "Downloading video", Toast.LENGTH_SHORT).show();
 										
 										String description = (String) getObjectField(vinePost, "description");
+										
+										File directory =
+												new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/Vine");
+										if (!directory.exists())
+											directory.mkdirs();
 										
 										DownloadManager.Request request = new DownloadManager.Request(Uri.parse(videoUrl));
 										request.setDescription(description);
