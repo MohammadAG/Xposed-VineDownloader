@@ -12,7 +12,6 @@ import java.util.ArrayList;
 
 import android.app.DownloadManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
@@ -105,7 +104,7 @@ public class VineDownloader implements IXposedHookLoadPackage {
 										request.setTitle("Vine Video");
 										request.allowScanningByMediaScanner();
 										request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-										request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "Vine/" + description + ".mp4");
+										request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "Vine/" + description.replace("/", "") + ".mp4");
 
 										DownloadManager manager = (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);
 										manager.enqueue(request);
